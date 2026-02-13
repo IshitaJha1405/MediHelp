@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MediHelp - Dashboard</title>
+
+  <link rel="icon" href="logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+
+  <div class="brand">
+    <img src="logo.png" class="app-logo">
+    <span class="app-name">MediHelp</span>
+  </div>
+
+</header>
+
+
+<div class="dashboard">
+
+  <h2>Upload Medical Report</h2>
+
+
+  <!-- Language -->
+  <div class="language-box">
+
+    <p>Select Language:</p>
+
+    <button class="lang-btn active" id="enBtn"
+      onclick="setLanguage('english')">
+      English
+    </button>
+
+    <button class="lang-btn" id="hiBtn"
+      onclick="setLanguage('hindi')">
+      हिन्दी
+    </button>
+
+  </div>
+
+
+  <!-- Report Type -->
+  <div class="language-box">
+
+    <p>Select Report Type:</p>
+
+    <button class="lang-btn active" id="sumBtn"
+      onclick="setReportType('summary')">
+      Summary
+    </button>
+
+    <button class="lang-btn" id="detBtn"
+      onclick="setReportType('detailed')">
+      Detailed
+    </button>
+
+  </div>
+
+
+  <input type="file" id="fileUpload" accept=".pdf">
+
+  <button onclick="uploadFile()">Analyze</button>
+
+  <div id="result"></div>
+
+  <!-- Download -->
+  <button id="downloadBtn" onclick="downloadPDF()" style="display:none;">
+    📥 Download Report (PDF)
+  </button>
+
+</div>
+
+
+<script src="script.js"></script>
+</body>
+</html>
