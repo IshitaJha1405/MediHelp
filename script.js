@@ -68,7 +68,7 @@ formData.append("report_type",selectedReportType);
 
 try{
 
-let response=await fetch("http://127.0.0.1:8000/analyze",{
+let response=await fetch("https://medihelp-1jcf.onrender.com/analyze",{
 method:"POST",
 body:formData
 });
