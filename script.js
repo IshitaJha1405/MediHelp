@@ -1,171 +1,127 @@
-// ---------------- THEME ----------------
+let selectedLanguage="english";
+let selectedReportType="summary";
 
-window.onload = function(){
-
-  let theme = localStorage.getItem("theme");
-
-  if(theme === "dark"){
-    document.body.classList.add("dark");
-  }
-
-  updateThemeIcon();
-};
+let lastResult="";
 
 
-function toggleTheme(){
-
-  document.body.classList.toggle("dark");
-
-  if(document.body.classList.contains("dark")){
-    localStorage.setItem("theme","dark");
-  }
-  else{
-    localStorage.setItem("theme","light");
-  }
-
-  updateThemeIcon();
-}
-
-
-function updateThemeIcon(){
-
-  let btns = document.querySelectorAll(".theme-btn");
-
-  btns.forEach(btn => {
-
-    if(document.body.classList.contains("dark")){
-      btn.innerHTML = "☀️";
-    }
-    else{
-      btn.innerHTML = "🌙";
-    }
-
-  });
-}
-
-
-// ---------------- AUTH ----------------
-
-function goToLogin(){
-  window.location.href = "login.html";
-}
-
-
-document.getElementById("loginForm")?.addEventListener("submit", function(e){
-
-  e.preventDefault();
-
-  let email = document.getElementById("email").value;
-  let password = document.getElementById("password").value;
-
-  if(email && password){
-
-    localStorage.setItem("loggedIn","true");
-
-    window.location.href = "dashboard.html";
-  }
-
-});
-
-
-function logout(){
-
-  localStorage.removeItem("loggedIn");
-
-  window.location.href = "index.html";
-}
-
-
-// Protect dashboard
-if(window.location.pathname.includes("dashboard")){
-
-  if(localStorage.getItem("loggedIn") !== "true"){
-    window.location.href = "login.html";
-  }
-
-}
-
-
-// ---------------- LANGUAGE ----------------
-
-let selectedLanguage = "english";
-
+// language
 
 function setLanguage(lang){
 
-  selectedLanguage = lang;
+selectedLanguage=lang;
 
-  document.getElementById("enBtn")?.classList.remove("active");
-  document.getElementById("hiBtn")?.classList.remove("active");
+document.getElementById("enBtn").classList.remove("active");
+document.getElementById("hiBtn").classList.remove("active");
 
-  if(lang === "english"){
-    document.getElementById("enBtn")?.classList.add("active");
-  }
-  else{
-    document.getElementById("hiBtn")?.classList.add("active");
-  }
+if(lang==="english"){
+document.getElementById("enBtn").classList.add("active");
+}
+else{
+document.getElementById("hiBtn").classList.add("active");
+}
 
 }
 
 
-// ---------------- FILE UPLOAD ----------------
+// report type
+
+function setReportType(type){
+
+selectedReportType=type;
+
+document.getElementById("sumBtn").classList.remove("active");
+document.getElementById("detBtn").classList.remove("active");
+
+if(type==="summary"){
+document.getElementById("sumBtn").classList.add("active");
+}
+else{
+document.getElementById("detBtn").classList.add("active");
+}
+
+}
+
+
+
+// upload
 
 async function uploadFile(){
 
-  let file = document.getElementById("fileUpload").files[0];
-  let result = document.getElementById("result");
+let file=document.getElementById("fileUpload").files[0];
 
-  if(!file){
-    alert("Please upload PDF file");
-    return;
-  }
+let result=document.getElementById("result");
 
-  if(file.type !== "application/pdf"){
-    alert("Only PDF allowed");
-    return;
-  }
+if(!file){
+alert("Upload PDF");
+return;
+}
 
-  result.innerHTML = "🤖 AI is analyzing your report...";
+result.innerHTML="Analyzing report...";
 
 
-  let formData = new FormData();
+let formData=new FormData();
 
-  formData.append("file", file);
-  formData.append("language", selectedLanguage);
-
-
-  try{
-
-    let response = await fetch("http://127.0.0.1:8000/analyze", {
-      method: "POST",
-      body: formData
-    });
-
-    let data = await response.json();
+formData.append("file",file);
+formData.append("language",selectedLanguage);
+formData.append("report_type",selectedReportType);
 
 
-    if(data.status === "success"){
+try{
 
-      result.innerHTML = `
-        ✅ AI Analysis Complete<br><br>
+let response=await fetch("http://127.0.0.1:8000/analyze",{
+method:"POST",
+body:formData
+});
 
-        <pre style="text-align:left;white-space:pre-wrap;">
-${data.analysis}
-        </pre>
-      `;
+let data=await response.json();
 
-    }
-    else{
-      result.innerHTML = "❌ Analysis Failed";
-    }
+if(data.status==="success"){
 
-  }
-  catch(err){
+lastResult=data.analysis;
 
-    console.error(err);
+result.innerHTML=data.analysis;
 
-    result.innerHTML = "⚠️ Server Error";
+document.getElementById("downloadBtn").style.display="block";
 
-  }
+}
+
+else{
+result.innerHTML="Analysis failed";
+}
+
+}
+catch(err){
+
+result.innerHTML="Server Error";
+
+}
+
+}
+
+
+
+// download pdf
+
+function downloadPDF(){
+
+let blob=new Blob([lastResult],{type:"application/pdf"});
+
+let url=URL.createObjectURL(blob);
+
+let a=document.createElement("a");
+
+a.href=url;
+a.download="MediHelp_Report.pdf";
+
+a.click();
+
+}
+
+
+// theme toggle
+
+document.getElementById("themeBtn").onclick=function(){
+
+document.body.classList.toggle("dark");
 
 }

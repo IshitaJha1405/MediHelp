@@ -1,91 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>MediHelp - Smart Healthcare</title>
 
-  <link rel="icon" href="logo.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediHelp | Smart Medical Assistant</title>
 
-  <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
 </head>
+
+
 <body>
 
 <header>
 
-  <div class="brand">
-    <img src="logo.png" class="app-logo">
-    <span class="app-name">MediHelp</span>
-  </div>
+<div class="logo">
 
-  <div class="header-right">
+<img src="logo.png">
+<h2>MediHelp</h2>
 
-    <button class="theme-btn" onclick="toggleTheme()">🌙</button>
+</div>
 
-    <button class="login-btn" onclick="goToLogin()">Login</button>
+<div class="header-right">
 
-  </div>
+<button id="themeBtn">🌙</button>
+
+<button onclick="goToLogin()">Login</button>
+
+</div>
 
 </header>
 
 
+
 <section class="hero">
 
-  <h1>Your Smart Medical Assistant</h1>
+<h1>Your Smart Medical Assistant</h1>
 
-  <p>Upload medical reports and get AI-powered health insights.</p>
-
-  <img src="logo2.png" class="hero-img">
+<p>Upload medical reports and get AI-powered health insights.</p>
 
 </section>
 
 
-<section class="features">
 
-  <h2>How MediHelp Helps You</h2>
+<div class="dashboard">
 
-  <div class="card-container">
+<h2>Upload Medical Report</h2>
 
-    <div class="card">
-      📄 Upload Reports
-      <p>Securely upload PDFs</p>
-    </div>
 
-    <div class="card">
-      🤖 AI Analysis
-      <p>Easy medical explanation</p>
-    </div>
+<!-- Language -->
 
-    <div class="card">
-      💡 Health Tips
-      <p>Personalized suggestions</p>
-    </div>
+<div class="option-group">
 
-  </div>
+<p>Select Language</p>
 
-</section>
+<button class="lang-btn active" id="enBtn" onclick="setLanguage('english')">English</button>
 
-<!---
-<section class="steps">
+<button class="lang-btn" id="hiBtn" onclick="setLanguage('hindi')">हिन्दी</button>
 
-  <h2>How to Use</h2>
+</div>
 
-  <ol>
-    <li>Click Login</li>
-    <li>Sign In</li>
-    <li>Upload PDF</li>
-    <li>Get Analysis</li>
-  </ol>
 
-</section>
--->
+<!-- Report type -->
+
+<div class="option-group">
+
+<p>Select Report Type</p>
+
+<button class="lang-btn active" id="sumBtn" onclick="setReportType('summary')">Summary</button>
+
+<button class="lang-btn" id="detBtn" onclick="setReportType('detailed')">Detailed</button>
+
+</div>
+
+
+<div class="upload-box">
+
+<input type="file" id="fileUpload" accept=".pdf">
+
+<button onclick="uploadFile()">Analyze</button>
+
+</div>
+
+
+<div id="result"></div>
+
+<button id="downloadBtn" onclick="downloadPDF()">Download Report</button>
+
+</div>
+
 
 <footer>
-  © 2026 MediHelp | AI Healthcare Platform
+
+<p>© 2026 MediHelp | AI Powered Healthcare</p>
+
 </footer>
 
 
 <script src="script.js"></script>
+
 </body>
 </html>
